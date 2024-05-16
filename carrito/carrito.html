@@ -4,8 +4,190 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrito de Compras - LuxuryCart</title>
-    <link rel="stylesheet" href="carrito.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+
+    <script src="/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            var total = 0;
+            var cartItems = [];
+
+            $(".btn-add-to-cart").click(function(){ 
+                var price = parseFloat($(this).data("price"));
+                var productName = $(this).closest(".card-body").find(".card-title").text();
+                total += price;
+                cartItems.push({name: productName, price: price});
+                updateTotal();
+            });
+
+            function updateTotal() {
+                $(".cart-total").text("$" + total.toFixed(2));
+            }
+
+            $(".btn-show-cart").click(function(){
+                $(".cart-items").empty();
+                cartItems.forEach(function(item) {
+                    $(".cart-items").append(`<p>${item.name}: $${item.price.toFixed(2)}</p>`);
+                });
+                $("#cartModal").modal("show");
+            });
+
+            $(".btn-finish-purchase").click(function(){
+                var purchasedItems = cartItems.map(item => item.name).join(", ");
+                $("#purchase-items").text(purchasedItems);
+                $("#toast").toast('show');
+                cartItems = [];
+                total = 0;
+                updateTotal();
+            });
+        });
+    </script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .video {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            padding: 50px;
+            background-color: rgba(107, 107, 107, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 48px;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            background-color: #505050;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            color: #666;
+            font-size: 18px;
+        }
+
+        .btn-primary {
+            background-color: #ff4d00;
+            border: none;
+            border-radius: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-warning:hover {
+            background-color: #ff3300;
+            border-color: #ff3300;
+            transform: translateY(-5px);
+        }
+
+        .checkout-button {
+            background-color: #ff4d00;
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 24px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 50px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .checkout-button:hover {
+            background-color: #ff3300;
+            transform: translateY(-5px);
+        }
+
+        .waiting-list {
+            display: none;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 50px;
+            margin-top: 50px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .waiting-list h2 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .waiting-list p {
+            font-size: 24px;
+            color: #666;
+        }
+
+        #vercarrito{
+            margin-top: 15px;
+            border-radius: 7px;
+            background-color: #ff3300;
+            border-color: #ff3300;
+
+        }
+        #vercarrito:hover{
+            background-color: #ffae00;
+            border-color: #ffae00;
+            color: #000;
+        }
+    </style>
 </head>
 <body>
     <div class="video-background">
@@ -18,67 +200,68 @@
     <div class="content">
         <div class="container">
             <h1>¡Bienvenido a Jacob & Co!</h1>
+            <h4>Unicos Relojes Disponibles</h4>
             <div class="row justify-content-center">
                 <div class="col-md-4">
                     <div class="card">
-                        <img src="/images/batman.webp" class="card-img-top" alt="Producto 1">
+                        <img src="/images/bugatti.webp" class="card-img-top" alt="Producto 1">
                         <div class="card-body">
                             <h5 class="card-title">Jacob & Co BUGATTI eb110</h5>
-                            <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit culpa corporis molestias magnam, labore dicta. Fuga aspernatur dolorem libero. Recusandae est iste autem aperiam eius ipsum fugiat voluptas iure alias.</p>
-                            <a href="#" class="btn btn-warning">Ver Detalles</a>
+                            <p class="card-text">Precio: $670,000</p>
+                            <a href="#" class="btn btn-warning btn-add-to-cart" data-price="670000.00">Agregar al Carrito</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card">
-                        <img src="/images/bugatti.webp" class="card-img-top" alt="Producto 2">
+                        <img src="/images/batman.webp" class="card-img-top" alt="Producto 2">
                         <div class="card-body">
                             <h5 class="card-title">Jacob & Co BATMAN</h5>
-                            <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Amet consequatur sint voluptatibus in quidem voluptas quo dolore facilis incidunt. Recusandae reiciendis necessitatibus, voluptate architecto dolore nisi facilis maiores placeat ad!</p>
-                            <a href="#" class="btn btn-warning">Ver Detalles</a>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-            <div class="modal-container">
-                <a href="#" class="checkout-button button" data-bs-toggle="modal" data-bs-target="#exampleModal">Finalizar Compra</a>
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Lo Sentimos!</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <span>No formas parte de nuestra </span><span style="color: darkgoldenrod;"> Lista De Espera</span>
-                                <p>¿Que esperas a postularte?</p>
-                                <p>
-                                    ¡Únete a nuestra exclusiva lista de espera y sé el primero en descubrir las últimas incorporaciones a nuestra colección de relojes de lujo! Con acceso anticipado a lanzamientos, eventos especiales y ofertas exclusivas, ser parte de nuestra lista de espera es la clave para estar un paso adelante en el mundo del estilo y la elegancia. Para unirte, simplemente visita nuestro sitio web y busca la sección "Lista de Espera", donde podrás ingresar tu correo electrónico para recibir notificaciones privilegiadas. No pierdas la oportunidad de ser parte de esta experiencia única. ¡Te esperamos!
-
-
-
-
-
-
-                                </p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <a class="btn btn-warning" href="/Postularse/Postularse.html" role="button">Postularme</a>
-                            </div>
+                            <p class="card-text">Precio: $530,000</p>
+                            <a href="#" class="btn btn-warning btn-add-to-cart" data-price="530000.00">Agregar al Carrito</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="waiting-list">
-                <h2>¡Gracias por tu compra!</h2>
-                <p>Estamos preparando tus productos. Por favor, espera un momento.</p>
+            <a href="#" class="btn btn-primary btn-show-cart" id="vercarrito">Ver Carrito</a>
+        </div>
+    </div>
+
+    <!-- Modal para mostrar el carrito -->
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cartModalLabel">Carrito de Compras</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Total: <span class="cart-total">$0.00</span></p>
+                    <div class="cart-items"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary btn-finish-purchase">Finalizar Compra</button>
+                </div>
             </div>
-            <a href="/repositoriop1/principal.html" class="checkout-button button" style="background-color: brown;">Volver al Inicio</a>
+        </div>
+    </div>
+
+    <!-- Mensaje de compra exitosa -->
+    <div id="purchase-success-message" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="toast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Compra Exitosa</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                La compra de <span id="purchase-items"></span> se ha hecho con éxito.
+            </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    
 </body>
 </html>

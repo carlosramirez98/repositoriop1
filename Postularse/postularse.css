@@ -63,3 +63,15 @@
             object-fit: cover;
             z-index: -1;
         }
+
+        #reg{
+            background-color: #ff3300;
+            border-color: #ff3300;
+            color: white;
+        }
+
+        #reg:hover{
+            background-color: #ffae00;
+            border-color: #ffae00;
+            color: black;
+        }
